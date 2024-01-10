@@ -1,2 +1,2 @@
 # Leader-Follower-STL
-leader follower problem with signal temporal logic
+This repo containts the code for a leader-follower problem solved using formal methods.
