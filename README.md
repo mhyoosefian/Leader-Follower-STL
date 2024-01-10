@@ -5,3 +5,4 @@ Note: You need to have Mosek and Yalmip installed on your machine.
 
 # Problem statement
 ![Image 1](/images/1.png)
+![Image 1](/images/2.png)
