@@ -5,7 +5,7 @@ Note: You need to have Mosek and Yalmip installed on your machine.
 
 # Problem statement
 ![Image 1](/images/1.png)
-<img src="/images/1.png" width="100" height="100">
+<img src="/images/1.png" width="90%" height="90%">
 ![Image 1](/images/2.png)
 
 # Solution
