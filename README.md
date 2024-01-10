@@ -1,5 +1,5 @@
 # Leader-Follower-STL
-This repo containts the code for a leader-follower problem solved using formal methods.
+This repo containts the code for a leader-follower problem with signal temporal logic specification, solved using mixed-integer programming.
 
 Note: You need to have Mosek and Yalmip installed on your machine.
 
