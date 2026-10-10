@@ -166,61 +166,35 @@ sol = optimize(Constraints, Objective, options);
 
 %% Plot the result
 
-% Plot position
-figure;
-desRegion = polyshape([xLeft xLeft xRight xRight], [yBottom yTop yTop yBottom]);
-for i=1:N+1
-    leader = scatter(loc_l(1, i), loc_l(2, i), robotsWidth, 'k', 'filled', 'square');
-    xlim([-5 3]);
-    ylim([-3 3]);
-    hold on;
-    follower = scatter(x(i), y(i), robotsWidth, 'b', 'filled', 'square');
-    pgon_b = polyshape([loc_l(1, i)-b loc_l(1, i)+b loc_l(1, i)+b loc_l(1, i)-b], [loc_l(2, i)+b loc_l(2, i)+b loc_l(2, i)-b loc_l(2, i)-b]);
-    p_b = plot(pgon_b, 'EdgeColor', 'r', 'FaceAlpha', 0, 'LineWidth', 2);
-    pgon_a = polyshape([loc_l(1, i)-a loc_l(1, i)+a loc_l(1, i)+a loc_l(1, i)-a], [loc_l(2, i)+a loc_l(2, i)+a loc_l(2, i)-a loc_l(2, i)-a]);
-    p_a = plot(pgon_a, 'EdgeColor', 'r', 'FaceAlpha', 0, 'LineWidth', 2);
-    plot(desRegion, "FaceColor", 'green', 'EdgeColor', 'green');
-    pause(0.1);
-    xlim([-5 3]);
-    ylim([-3 3]);
-    [in, on] = inpolygon(double(x(i)), double(y(i)), [xLeft xLeft xRight xRight], [yBottom yTop yTop yBottom]);
-    if in ~= 0 || on ~= 0
-        txt = text(double(x(i)), double(y(i)), 'Visited! $\rightarrow$', 'HorizontalAlignment', 'right', 'FontSize', 16, 'Interpreter','latex');
-        pause(1.5);
-        delete(txt);
-    end
-    if i~=N+1
-        delete(follower);
-        delete(p_b);
-        delete(p_a);
-    end
-end
-pause(1.5);
+saveVideo = 0; % 1 to also save the animation as an MP4 file
+xs = double(x); ys = double(y);
 
-% Plot control actions
-figure;
-plot(0:dt:T-1, double(ux), 'k-*', 'LineWidth', 2, 'DisplayName', '$u_x$');
-hold on
-box on
-grid on
-plot(0:dt:T-1, double(uy), 'k--', 'LineWidth', 2, 'DisplayName', '$u_y$');
-plot(0:dt:T-1, ones(N, 1)*uxMax, 'r', 'LineWidth', 2, 'DisplayName', '$u_{max}$');
-plot(0:dt:T-1, ones(N, 1)*uxMin, 'b', 'LineWidth', 2, 'DisplayName', '$u_{min}$');
-xlabel('Time (s)', 'Interpreter', 'latex');
-legend('Interpreter','latex', 'FontSize', 14);
+% Animation (five times real time)
+P = struct('r', r, 'omega_l', omega_l, 'theta0', theta0, 'a', a, 'b', b, ...
+    'region', [xLeft xRight yBottom yTop], 'window', [start finish]);
+opts = struct('speed', 5);
+if saveVideo, opts.video = 'leader_follower.mp4'; end
+animateLeaderFollower(0:dt:T, loc_l, [xs'; ys'], P, opts);
 
-% Plot distance
-figure;
-hold on;
-box on; 
-grid on;
-distX = abs(double(x) - loc_l(1,:)');
-distY = abs(double(y) - loc_l(2,:)');
-dist = max(distX, distY);
+% Control actions
+figure('Color', 'w');
+stairs(0:dt:T-1, double(ux), 'LineWidth', 2, 'DisplayName', '$u_x$');
+hold on; box on; grid on;
+stairs(0:dt:T-1, double(uy), '--', 'LineWidth', 2, 'DisplayName', '$u_y$');
+yline(uxMax, 'r', 'LineWidth', 1.5, 'DisplayName', '$u_{\max}$');
+yline(uxMin, 'b', 'LineWidth', 1.5, 'DisplayName', '$u_{\min}$');
+xlabel('Time (s)', 'Interpreter', 'latex'); ylabel('Velocity (m/s)', 'Interpreter', 'latex');
+ylim([-0.5 0.5]);
+legend('Interpreter', 'latex', 'FontSize', 14, 'Location', 'northoutside', 'NumColumns', 4);
+
+% Distance between the agents
+figure('Color', 'w');
+hold on; box on; grid on;
+dist = max(abs(xs - loc_l(1,:)'), abs(ys - loc_l(2,:)'));
 plot(0:dt:T, dist, 'k', 'LineWidth', 2);
-plot(0:dt:T, ones(N+1, 1)*b, 'r', 'LineWidth', 2);
-plot(0:dt:T, ones(N+1, 1)*a, 'b', 'LineWidth', 2);
-legend('$||X_{leader} - X_{follower}||_{\infty}$', 'Maximum allowable distance', 'Minimum allowable distance', 'Interpreter', 'latex', 'FontSize', 14);
-xlabel('Time (s)', 'Interpreter', 'latex');
-ylim([0.4 1.5]);
-ylabel('Distance (m)', 'Interpreter', 'latex');
+yline(b, 'r', 'LineWidth', 1.5);
+yline(a, 'b', 'LineWidth', 1.5);
+legend('$\|X_{leader} - X_{follower}\|_{\infty}$', 'Maximum allowable distance', 'Minimum allowable distance', ...
+    'Interpreter', 'latex', 'FontSize', 14, 'Location', 'northoutside');
+xlabel('Time (s)', 'Interpreter', 'latex'); ylabel('Distance (m)', 'Interpreter', 'latex');
+ylim([0.3 1.6]);
