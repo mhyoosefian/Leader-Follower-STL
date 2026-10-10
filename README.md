@@ -24,7 +24,7 @@ The separation requirements are written with the infinity norm, which is conserv
 \varphi = F_{[0,60]}\big(p_f \in \text{goal}\big) \wedge G_{[0,T]}\big(\|p_f - p_l\|_\infty \le \sqrt{2}\big) \wedge G_{[0,T]}\big(\|p_f - p_l\|_\infty \ge 0.5\big),
 ```
 
-where $F$ means *eventually* and $G$ means *always*. The first separation requirement is a conjunction of linear constraints and is added directly. The goal region and the collision avoidance (a disjunction: the follower must be to the left, to the right, above or below the leader) are encoded with binary variables and the big-M method, and the logical and temporal operators become linear inequalities between these binary variables.
+where $F$ means *eventually* and $G$ means *always*. The first separation requirement is a conjunction of linear constraints and is added directly. The goal region and the collision avoidance (a disjunction: the follower must be to the left, to the right, above or below the leader) are encoded with binary variables and the big-M method, and the logical and temporal operators become linear inequalities between these binary variables. Among all trajectories that satisfy the specification, the code finds the one with the least control effort, $\sum_t \big(|u_x(t)| + |u_y(t)|\big)$.
 
 ## Requirements
 

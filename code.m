@@ -1,5 +1,4 @@
 % Mohammad Hussein Yoosefian Nooshabadi
-% Formal Methods.
 % The code is written and tested on a MacOS machine.
 
 clc
@@ -157,7 +156,7 @@ end
 
 %% The objective function
 
-Objective = sum(ux) + sum(uy);
+Objective = sum(abs(ux)) + sum(abs(uy)); % minimum control effort
 
 %% Solving the optimization problem
 
