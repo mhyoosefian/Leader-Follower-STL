@@ -4,7 +4,7 @@ function animateLeaderFollower(t, loc_l, loc_f, P, opts)
 %   animateLeaderFollower(t, loc_l, loc_f, P)        plays the animation.
 %   animateLeaderFollower(t, loc_l, loc_f, P, opts)  with options:
 %       opts.video = 'leader_follower.mp4'  also saves it as an MP4 file
-%       opts.speed = 5                      playback speed (5 = five times real time)
+%       opts.speed = 4                      playback speed (4 = four times real time)
 %       opts.fps   = 30                     frames per second
 %
 %   t     : 1 x (N+1) time steps of the solution (s)
@@ -15,7 +15,7 @@ function animateLeaderFollower(t, loc_l, loc_f, P, opts)
 
 if nargin < 5, opts = struct; end
 if ~isfield(opts, 'video'), opts.video = ''; end
-if ~isfield(opts, 'speed'), opts.speed = 5; end
+if ~isfield(opts, 'speed'), opts.speed = 4; end
 if ~isfield(opts, 'fps'), opts.fps = 30; end
 
 % Smooth motion between the time steps: the leader moves on its circle and

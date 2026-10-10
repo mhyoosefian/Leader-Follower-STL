@@ -168,10 +168,10 @@ sol = optimize(Constraints, Objective, options);
 saveVideo = 0; % 1 to also save the animation as an MP4 file
 xs = double(x); ys = double(y);
 
-% Animation (five times real time)
+% Animation (four times real time)
 P = struct('r', r, 'omega_l', omega_l, 'theta0', theta0, 'a', a, 'b', b, ...
     'region', [xLeft xRight yBottom yTop], 'window', [start finish]);
-opts = struct('speed', 5);
+opts = struct('speed', 4);
 if saveVideo, opts.video = 'leader_follower.mp4'; end
 animateLeaderFollower(0:dt:T, loc_l, [xs'; ys'], P, opts);
 
@@ -179,9 +179,9 @@ animateLeaderFollower(0:dt:T, loc_l, [xs'; ys'], P, opts);
 figure('Color', 'w');
 stairs(0:dt:T-1, double(ux), 'LineWidth', 2, 'DisplayName', '$u_x$');
 hold on; box on; grid on;
-stairs(0:dt:T-1, double(uy), '--', 'LineWidth', 2, 'DisplayName', '$u_y$');
-yline(uxMax, 'r', 'LineWidth', 1.5, 'DisplayName', '$u_{\max}$');
-yline(uxMin, 'b', 'LineWidth', 1.5, 'DisplayName', '$u_{\min}$');
+stairs(0:dt:T-1, double(uy), 'LineWidth', 2, 'DisplayName', '$u_y$');
+yline(uxMax, 'k-', 'LineWidth', 1.5, 'DisplayName', '$u_{\max}$');
+yline(uxMin, 'k--', 'LineWidth', 1.5, 'DisplayName', '$u_{\min}$');
 xlabel('Time (s)', 'Interpreter', 'latex'); ylabel('Velocity (m/s)', 'Interpreter', 'latex');
 ylim([-0.5 0.5]);
 legend('Interpreter', 'latex', 'FontSize', 14, 'Location', 'northoutside', 'NumColumns', 4);
